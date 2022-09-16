@@ -2,7 +2,7 @@
 
 // Constants
 const animationDuration = 400;
-const words = ["all", "am", "are", "at", "ate", "be"];
+const words = ["all", "am", "are", "at", "ate", "be", "black", "brown", "but", "came"];
 
 class SightWordCardManager
 {
