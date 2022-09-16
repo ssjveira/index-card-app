@@ -24,6 +24,28 @@ class SightWordCardManager
         this.#cardContainerDiv.addEventListener('click', () => {
             this.showCard();
         });
+
+        // Use arrows to go forward / back between cards
+        document.addEventListener('keydown', (e) => {
+            if (e.key == 'ArrowUp') {
+                // up arrow
+                this.showCard();
+            }
+            else if (e.key == 'ArrowDown') {
+                // down arrow
+                this.showCard(false);
+            }
+            else if (e.key == 'ArrowLeft') {
+                // left arrow
+                this.showCard(false);
+            }
+            else if (e.key == 'ArrowRight') {
+                // right arrow
+                this.showCard();
+            }
+        });
+
+        this.showCard();
     }
 
     doAnimation() {
