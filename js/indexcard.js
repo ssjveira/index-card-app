@@ -20,9 +20,9 @@ class SightWordCardManager
         // Set main title
         this.#mainTitleDiv.appendChild(document.createTextNode(title));
 
-        // Show first card
+        // Handle clicks
         this.#cardContainerDiv.addEventListener('click', () => {
-            this.showNextCard();
+            this.showCard();
         });
     }
 
@@ -67,22 +67,28 @@ class SightWordCardManager
         }
     }
 
-    showNextCard() {
+    showCard(moveForward=true) {
         if(this.#isAnimating) {
             return;
         }
 
         this.#isAnimating = true;
 
-        if(this.#currentIndex == -1) {
-            this.#currentIndex = 0;
-        }
-        else if(this.#currentIndex == (this.#wordArray.length - 1)) { // Reshuffle and start back at the beginning
-            this.shuffle();
-            this.#currentIndex = 0;
+        if(moveForward) {
+            this.#currentIndex += 1;
         }
         else {
-            this.#currentIndex += 1;
+            this.#currentIndex -= 1;
+        }
+
+        // Wrap index around if we go outside range [0, wordArray.length - 1]
+        if(this.#currentIndex < 0) {
+            this.shuffle();
+            this.#currentIndex = this.#wordArray.length - 1;
+        }
+        else if(this.#currentIndex >= this.#wordArray.length) {
+            this.shuffle();
+            this.#currentIndex = 0;
         }
 
         this.doAnimation();
@@ -100,5 +106,4 @@ class SightWordCardManager
 
 window.onload = function () {
     const cardManager = new SightWordCardManager("Sight Words", words);
-    cardManager.showNextCard();
 }
