@@ -326,6 +326,20 @@ const sightWords = {
 };
 
 /**
+ * Randomly shuffles an array.
+ * 
+ * @param {*} array 
+ * 
+ * @note Taken from here: https://javascript.plainenglish.io/how-to-shuffle-a-javascript-array-1357eed1680f
+ */
+const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+/**
  * Class that handles the selection of the sight word group to display cards for.
  */
 class GroupSelectionManager {
@@ -363,7 +377,7 @@ class GroupSelectionManager {
         backButtonElement.type = "button";
         backButtonElement.id = "back-button";
         backButtonElement.appendChild(document.createTextNode("BACK"));
-        
+
         document.body.appendChild(backButtonElement);
         backButtonElement.addEventListener("click", () => {
             anime({
@@ -388,7 +402,7 @@ class GroupSelectionManager {
         });
 
         const backButtonElement = document.getElementById("back-button");
-        if(backButtonElement) {
+        if (backButtonElement) {
             backButtonElement.parentElement.removeChild(backButtonElement);
         }
     }
@@ -441,6 +455,7 @@ class SightWordCardManager {
     setWordGroup(groupName) {
         this.#groupName = groupName;
         this.#wordArray = sightWords[groupName];
+        shuffleArray(this.#wordArray);
     }
 
     doAnimation(isOnShown, callback) {
@@ -453,33 +468,15 @@ class SightWordCardManager {
             duration: animationDuration,
             complete: function (prevAnim) {
                 cardManager.setIsAnimating(false);
-                if(callback) {
+                if (callback) {
                     callback();
                 }
             }
         });
     }
 
-    // Taken from: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-    // Implementation of the Knuth shuffle
-    shuffle() {
-        let currentIndex = this.#wordArray.length, randomIndex;
-
-        // While there remain elements to shuffle.
-        while (currentIndex != 0) {
-
-            // Pick a remaining element.
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex--;
-
-            // And swap it with the current element.
-            [this.#wordArray[currentIndex], this.#wordArray[randomIndex]] = [
-                this.#wordArray[randomIndex], this.#wordArray[currentIndex]];
-        }
-    }
-
     hideCard(cbOnHidden) {
-        if(this.#isAnimating) {
+        if (this.#isAnimating) {
             return;
         }
 
@@ -517,11 +514,11 @@ class SightWordCardManager {
 
         // Wrap index around if we go outside range [0, wordArray.length - 1]
         if (this.#currentIndex < 0) {
-            this.shuffle();
+            shuffleArray(this.#wordArray);
             this.#currentIndex = this.#wordArray.length - 1;
         }
         else if (this.#currentIndex >= this.#wordArray.length) {
-            this.shuffle();
+            shuffleArray(this.#wordArray);
             this.#currentIndex = 0;
         }
 
