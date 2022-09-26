@@ -4,8 +4,10 @@
 const animationDuration = 400;
 const words = ["all", "am", "are", "at", "ate", "be", "black", "brown", "but", "came"];
 
-class SightWordCardManager
-{
+/**
+ * Class that handles displaying a particular sight word group.
+ */
+class SightWordCardManager {
     #isAnimating = false;
     #currentIndex = -1;
     #cardContainerDiv = document.getElementById("card-container");
@@ -74,7 +76,7 @@ class SightWordCardManager
     // Taken from: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
     // Implementation of the Knuth shuffle
     shuffle() {
-        let currentIndex = this.#wordArray.length,  randomIndex;
+        let currentIndex = this.#wordArray.length, randomIndex;
 
         // While there remain elements to shuffle.
         while (currentIndex != 0) {
@@ -89,14 +91,14 @@ class SightWordCardManager
         }
     }
 
-    showCard(moveForward=true) {
-        if(this.#isAnimating) {
+    showCard(moveForward = true) {
+        if (this.#isAnimating) {
             return;
         }
 
         this.#isAnimating = true;
 
-        if(moveForward) {
+        if (moveForward) {
             this.#currentIndex += 1;
         }
         else {
@@ -104,11 +106,11 @@ class SightWordCardManager
         }
 
         // Wrap index around if we go outside range [0, wordArray.length - 1]
-        if(this.#currentIndex < 0) {
+        if (this.#currentIndex < 0) {
             this.shuffle();
             this.#currentIndex = this.#wordArray.length - 1;
         }
-        else if(this.#currentIndex >= this.#wordArray.length) {
+        else if (this.#currentIndex >= this.#wordArray.length) {
             this.shuffle();
             this.#currentIndex = 0;
         }
